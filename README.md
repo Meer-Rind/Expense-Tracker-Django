@@ -2,8 +2,6 @@
 ```markdown
 # Expense Tracker 📊💰
 
-![Expense Tracker Dashboard](screenshots/dashboard.png) <!-- Add your screenshot here -->
-
 A comprehensive personal finance management application built with Django that helps users track income, expenses, and analyze spending patterns.
 
 ## Features ✨
@@ -20,7 +18,7 @@ A comprehensive personal finance management application built with Django that h
 <!-- Add your screenshots here with brief descriptions -->
 | Dashboard | Expense List | Add Expense |
 |-----------|-------------|-------------|
-| ![dhasboard](https://github.com/user-attachments/assets/552af258-d1f8-47ea-bcbd-89436345b360) | ![expenselsit](https://github.com/user-attachments/assets/41f1914e-431f-45b7-b940-d9320f557836) | ![add_new expesne](https://github.com/user-attachments/assets/17a0daf6-cf9f-41c2-a3b5-13adf54f08ca) |
+| (https://github.com/user-attachments/assets/552af258-d1f8-47ea-bcbd-89436345b360) | (https://github.com/user-attachments/assets/41f1914e-431f-45b7-b940-d9320f557836) | (https://github.com/user-attachments/assets/17a0daf6-cf9f-41c2-a3b5-13adf54f08ca) |
 
 ## Getting Started 🚀
 

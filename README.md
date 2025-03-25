@@ -124,22 +124,3 @@ Contributions are welcome! Please follow these steps:
 
 Made with ❤️ and Django by [Meer-Rind](https://github.com/Meer-Rind)
 
-## How to Customize:
-
-1. Replace the screenshot placeholders with your actual screenshots
-2. Add more screenshots if you have them (profile page, login page, etc.)
-3. Update the installation instructions if you have any special requirements
-4. Add any additional features you've implemented
-5. Include a LICENSE file in your repository
-6. Update the "Project Structure" section if yours differs significantly
-
-This README provides:
-- Professional presentation
-- Clear installation instructions
-- Usage tips for both end-users and developers
-- Contribution guidelines
-- Contact information
-- License information
-- Visual elements with screenshots
-
-The formatting uses GitHub-flavored Markdown and includes emojis for better visual organization while maintaining a professional tone.

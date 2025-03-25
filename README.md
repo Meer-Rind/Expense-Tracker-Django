@@ -14,11 +14,15 @@ A comprehensive personal finance management application built with Django that h
 - ⚙️ Customizable user settings
 
 ## Screenshots 🖼️
+![Screenshot from 2025-03-25 23-04-37](https://github.com/user-attachments/assets/b0e81ff3-b8dd-4f9c-95b5-24b34ec03df6)
 
-<!-- Add your screenshots here with brief descriptions -->
-| Dashboard | Expense List | Add Expense |
-|-----------|-------------|-------------|
-| (https://github.com/user-attachments/assets/552af258-d1f8-47ea-bcbd-89436345b360) | (https://github.com/user-attachments/assets/41f1914e-431f-45b7-b940-d9320f557836) | (https://github.com/user-attachments/assets/17a0daf6-cf9f-41c2-a3b5-13adf54f08ca) |
+![dhasboard](https://github.com/user-attachments/assets/190cd14c-795e-4c1c-bfe5-dce1498ba35e)
+![expenselsit](https://github.com/user-attachments/assets/889370f1-882a-46b1-8eb0-27e963698fac)
+![add_new expesne](https://github.com/user-attachments/assets/567b9290-12a3-4be4-9d29-6d9e30c63c1e)
+![Screenshot from 2025-03-25 23-04-08](https://github.com/user-attachments/assets/3208ad3a-bcca-42cd-84f8-d7219ead3320)
+![Screenshot from 2025-03-25 23-04-21](https://github.com/user-attachments/assets/97752537-9afe-4c2f-b45d-d5c38f4e5dc7)
+
+
 
 ## Getting Started 🚀
 

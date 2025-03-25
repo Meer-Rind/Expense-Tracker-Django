@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+<body>
+    <form method='POST' enctype="multipart/form-data">  <!-- Added enctype -->
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Update</button>
+    </form>
+    
+    {% if user.profile.picture %}  <!-- Check if picture exists -->
+        <img src="{{ user.profile.picture.url }}" alt="Profile Picture">
+    {% else %}
+        <p>No profile picture uploaded</p>
+    {% endif %}
+</body>
+</html>

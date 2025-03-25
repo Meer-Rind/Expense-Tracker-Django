@@ -6,6 +6,8 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import logout as auth_logout
+from .models import Profile,Income
+from .forms import ProfileForm,IncomeForm
 
 # Create your views here.
 
@@ -33,27 +35,58 @@ def Register_view(request):
 
 
 def login_view(request):
-    if request.method =="POST":
-        form = AuthenticationForm(request.POST)
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            username =form.cleaned_data['username']
+            username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             
-            user = authenticate(request,username=username,password=password)
+            user = authenticate(request, username=username, password=password)
             
             if user is not None:
-                login(request,user)
-                messages.success(request,"Login sucesscful")
-                return redirect('Home')
+                login(request, user)
+                messages.success(request, "Login successful")
+                return redirect('profile')  # Changed to use URL name
             else:
-                messages.error(request,'Invalid username or password')
+                messages.error(request, 'Invalid username or password')
     else:
-        form = AuthenticationForm()
+        form = AuthenticationForm(request)
         
-    return render(request,'TrackingApp/login.html',{'form':form})    
-
+    return render(request, 'TrackingApp/login.html', {'form': form})
 
 
 def logout_view(request):
     logout(request)
     return redirect('/login')
+
+
+
+@login_required
+def Profile_view(request):
+    # Get or create profile for the user
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+    
+    return render(request, 'TrackingApp/profile.html', {"form": form})
+
+
+#creating views for the income
+@login_required
+def add_income(request):
+    if request.method =="POST":
+        form = IncomeForm(request.POST)
+        if form.is_valid():
+            income = form.save(commit=False)
+            income.user = request.user
+            income.save()
+            return redirect('dhasboard')
+    else:
+        form = IncomeForm()
+    return render(request,'TrackingApp/Income.html',{'form':form})        

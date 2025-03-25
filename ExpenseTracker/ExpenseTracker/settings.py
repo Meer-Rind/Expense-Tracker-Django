@@ -81,7 +81,8 @@ DATABASES = {
     }
 }
 
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -99,7 +100,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# Redirect to profile after successful login
+LOGIN_REDIRECT_URL = 'profile'  # Name of your profile URL pattern
 
+# Redirect to login page if @login_required detects anonymous user
+LOGIN_URL = 'login'  # Name of your login URL pattern
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

@@ -4,13 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h3 {
+            color: #166088;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        form p {
+            margin-bottom: 1rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #166088;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .register-link a {
+            color: #4a6fa5;
+            text-decoration: none;
+        }
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: #4a6fa5;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h3>Login</h3>
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button type="submit">Login</button>
-    </form>
+    <div class="container">
+        <h3>Welcome Back</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">Login</button>
+        </form>
+        <div class="register-link">
+            Don't have an account? <a href="{% url 'register' %}">Register here</a>
+        </div>
+        <footer>
+            &copy; 2023 Expense Tracker | 
+            <a href="https://github.com/Meer-Rind" target="_blank">GitHub Profile</a>
+        </footer>
+    </div>
 </body>
 </html>

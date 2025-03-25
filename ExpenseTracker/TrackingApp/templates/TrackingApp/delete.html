@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Delete</title>
     <style>
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
@@ -23,41 +23,48 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 500px;
+            text-align: center;
         }
         h1 {
-            color: #166088;
-            text-align: center;
+            color: #ff6b6b;
             margin-bottom: 1.5rem;
         }
-        form p {
-            margin-bottom: 1rem;
+        .expense-name {
+            font-weight: 600;
+            color: #166088;
         }
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
+        .confirmation-text {
+            margin-bottom: 2rem;
+            line-height: 1.6;
         }
-        input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
         }
-        button {
-            background-color: #4a6fa5;
-            color: white;
-            border: none;
+        button, .cancel-btn {
             padding: 0.75rem 1.5rem;
             border-radius: 5px;
             font-size: 1rem;
             cursor: pointer;
-            width: 100%;
-            margin-top: 1rem;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
         }
         button:hover {
-            background-color: #166088;
+            background-color: #e05555;
+        }
+        .cancel-btn {
+            background-color: #f1f7fe;
+            color: #4a6fa5;
+            border: 1px solid #4a6fa5;
+        }
+        .cancel-btn:hover {
+            background-color: #e1ecf8;
         }
         footer {
             text-align: center;
@@ -77,15 +84,23 @@
 </head>
 <body>
     <div class="container">
-        <h1>Create Your Account</h1>
-        <form method="POST">
+        <h1>Confirm Deletion</h1>
+        <p class="confirmation-text">
+            Are you sure you want to delete <span class="expense-name">{{expense.name}}</span>?
+            This action cannot be undone.
+        </p>
+        
+        <form method="POST" style="margin-bottom: 1rem;">
             {% csrf_token %}
-            {{form.as_p}}
-            <button type="submit">Register</button>
+            <div class="button-group">
+                <button type="submit">Delete</button>
+                <a href="{% url 'expense_list' %}" class="cancel-btn">Cancel</a>
+            </div>
         </form>
+        
         <footer>
             &copy; 2023 Expense Tracker | 
-            <a href="https://github.com/yourusername" target="_blank">GitHub Profile</a>
+            <a href="https://github.com/Meer-Rind" target="_blank">GitHub Profile</a>
         </footer>
     </div>
 </body>

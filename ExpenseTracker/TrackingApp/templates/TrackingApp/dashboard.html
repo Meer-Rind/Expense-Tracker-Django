@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 2rem;
+            color: #333;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            color: #166088;
+            margin-bottom: 0.5rem;
+        }
+        .summary {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .summary-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            min-width: 200px;
+        }
+        .summary-item h3 {
+            margin-top: 0;
+            color: #4a6fa5;
+            font-size: 1rem;
+        }
+        .summary-item p {
+            font-size: 1.5rem;
+            margin: 0.5rem 0 0;
+            font-weight: 600;
+        }
+        .income {
+            border-top: 4px solid #4fc3a1;
+        }
+        .expenses {
+            border-top: 4px solid #ff6b6b;
+        }
+        .balance {
+            border-top: 4px solid #4a6fa5;
+        }
+        .charts {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .chart-container {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .chart-container h3 {
+            color: #166088;
+            margin-top: 0;
+            text-align: center;
+        }
+        .chart-placeholder {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        .alert {
+            padding: 1rem;
+            background-color: #fff3cd;
+            color: #856404;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #ffeeba;
+        }
+        .quick-actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .quick-actions a {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .quick-actions a:hover {
+            background-color: #166088;
+        }
+        .quick-actions .add-income {
+            background-color: #4fc3a1;
+        }
+        .quick-actions .add-income:hover {
+            background-color: #3aa789;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: #4a6fa5;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <h2>Financial Dashboard</h2>
+        </div>
+        
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        
+        <div class="quick-actions">
+            <a href="{% url 'income' %}" class="add-income">Add Income</a>
+            <a href="{% url 'add_expense' %}">Add Expense</a>
+            <a href="{% url 'expense_list' %}">View Expenses</a>
+        </div>
+        
+        <div class="summary">
+            <div class="summary-item income">
+                <h3>Total Income</h3>
+                <p>{{ total_income }} {{ request.user.usersettings.preferred_currency }}</p>
+            </div>
+            <div class="summary-item expenses">
+                <h3>Total Expenses</h3>
+                <p>{{ total_expense }} {{ request.user.usersettings.preferred_currency }}</p>
+            </div>
+            <div class="summary-item balance">
+                <h3>Remaining Balance</h3>
+                <p>{{ remaining_income }} {{ request.user.usersettings.preferred_currency }}</p>
+            </div>
+        </div>
+        
+        <div class="charts">
+            <div class="chart-container">
+                <h3>Monthly Expenses</h3>
+                <canvas id="monthlyChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Category Expenses</h3>
+                <canvas id="categoryChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Expenses Over Time</h3>
+                <canvas id="expenseChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3>Income vs Expenses</h3>
+                <canvas id="comparisonChart"></canvas>
+            </div>
+        </div>
+        
+        <footer>
+            &copy; 2023 Expense Tracker | 
+            <a href="https://github.com/Meer-Rind" target="_blank">GitHub Profile</a>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Monthly Expenses Chart
+            var monthlyCtx = document.getElementById('monthlyChart').getContext('2d');
+            new Chart(monthlyCtx, {
+                type: 'bar',
+                data: {
+                    labels: [{% for key in monthly_expenses.keys %}"{{ key }}",{% endfor %}],
+                    datasets: [{
+                        label: 'Monthly Expenses',
+                        data: [{% for value in monthly_expenses.values %}{{ value }},{% endfor %}],
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+    
+            // Category Expenses Chart
+            var categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(categoryCtx, {
+                type: 'pie',
+                data: {
+                    labels: [{% for key in category_expenses.keys %}"{{ key }}",{% endfor %}],
+                    datasets: [{
+                        label: 'Expenses by Category',
+                        data: [{% for value in category_expenses.values %}{{ value }},{% endfor %}],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+    
+            // Expense Over Time Chart
+            fetch("{% url 'get_expense_data' %}")
+                .then(response => response.json())
+                .then(data => {
+                    var ctx = document.getElementById('expenseChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: data.labels,
+                            datasets: [{
+                                label: 'Expenses Over Time',
+                                data: data.data,
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+    
+            // Income vs Expense Comparison Chart
+            fetch("{% url 'get_income_expense_data' %}")
+                .then(response => response.json())
+                .then(data => {
+                    var ctx = document.getElementById('comparisonChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Income', 'Expenses'],
+                            datasets: [{
+                                label: 'Amount',
+                                data: [data.income, data.expense],
+                                backgroundColor: [
+                                    'rgba(75, 192, 192, 0.6)',
+                                    'rgba(255, 99, 132, 0.6)'
+                                ],
+                                borderColor: [
+                                    'rgba(75, 192, 192, 1)',
+                                    'rgba(255, 99, 132, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                });
+        });
+    </script>
+</body>
+</html>

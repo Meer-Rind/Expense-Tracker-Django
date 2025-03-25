@@ -3,46 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title>Add Income</title>
     <style>
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
             background-color: #f8f9fa;
             margin: 0;
-            padding: 2rem;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             color: #333;
         }
-        .profile-container {
-            max-width: 800px;
-            margin: 0 auto;
+        .container {
             background: white;
             padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
         }
-        h1 {
+        h3 {
             color: #166088;
+            text-align: center;
             margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        .profile-section {
-            display: flex;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        .profile-picture {
-            flex: 1;
-            text-align: center;
-        }
-        .profile-picture img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid #4fc3a1;
-        }
-        .profile-form {
-            flex: 2;
         }
         form p {
             margin-bottom: 1rem;
@@ -52,7 +37,7 @@
             margin-bottom: 0.5rem;
             font-weight: 500;
         }
-        input, textarea {
+        input, select {
             width: 100%;
             padding: 0.75rem;
             border: 1px solid #ddd;
@@ -60,22 +45,29 @@
             font-size: 1rem;
         }
         button {
-            background-color: #4a6fa5;
+            background-color: #4fc3a1;
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 5px;
             font-size: 1rem;
             cursor: pointer;
+            width: 100%;
             margin-top: 1rem;
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #166088;
+            background-color: #3aa789;
         }
-        .no-picture {
-            color: #666;
-            font-style: italic;
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #4a6fa5;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
         }
         footer {
             text-align: center;
@@ -94,30 +86,18 @@
     </style>
 </head>
 <body>
-    <div class="profile-container">
-        <h1>Your Profile</h1>
-        
-        <div class="profile-section">
-            <div class="profile-picture">
-                {% if user.profile.picture %}
-                    <img src="{{ user.profile.picture.url }}" alt="Profile Picture">
-                {% else %}
-                    <p class="no-picture">No profile picture uploaded</p>
-                {% endif %}
-            </div>
-            
-            <div class="profile-form">
-                <form method='POST' enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{form.as_p}}
-                    <button type="submit">Update Profile</button>
-                </form>
-            </div>
-        </div>
+    <div class="container">
+        <h3>Add Your Income</h3>
+        <form method="POST">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit">ADD INCOME</button>
+        </form>
+        <a href="{% url 'dashboard' %}" class="back-link">Back to Dashboard</a>
         
         <footer>
             &copy; 2023 Expense Tracker | 
-            <a href="https://github.com/Meer-Rind" target="_blank">GitHub Profile</a>
+            <a href="https://github.com/yourusername" target="_blank">GitHub Profile</a>
         </footer>
     </div>
 </body>

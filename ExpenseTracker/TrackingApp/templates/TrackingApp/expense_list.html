@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense List</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 2rem;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #166088;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .summary-cards {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+        .summary-card {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .summary-card h3 {
+            margin-top: 0;
+            color: #4a6fa5;
+            font-size: 1rem;
+        }
+        .summary-card p {
+            font-size: 1.5rem;
+            margin: 0.5rem 0 0;
+            font-weight: 600;
+        }
+        .income-card {
+            border-top: 4px solid #4fc3a1;
+        }
+        .expense-card {
+            border-top: 4px solid #ff6b6b;
+        }
+        .balance-card {
+            border-top: 4px solid #4a6fa5;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f1f7fe;
+            color: #166088;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        .actions a {
+            color: #4a6fa5;
+            text-decoration: none;
+            margin-right: 0.5rem;
+        }
+        .actions a:hover {
+            text-decoration: underline;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .action-buttons a {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .action-buttons a:hover {
+            background-color: #166088;
+        }
+        .add-expense {
+            background-color: #4fc3a1 !important;
+        }
+        .add-expense:hover {
+            background-color: #3aa789 !important;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: #4a6fa5;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Expenses</h2>
+        
+        <div class="summary-cards">
+            <div class="summary-card income-card">
+                <h3>Total Income</h3>
+                <p>{{ total_income }} {{ request.user.usersettings.preferred_currency }}</p>
+            </div>
+            <div class="summary-card expense-card">
+                <h3>Total Expenses</h3>
+                <p>{{ total_expense }} {{ request.user.usersettings.preferred_currency }}</p>
+            </div>
+            <div class="summary-card balance-card">
+                <h3>Remaining Balance</h3>
+                <p>{{ remaining_balance }} {{ request.user.usersettings.preferred_currency }}</p>
+            </div>
+        </div>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense.name }}</td>
+                    <td>{{ expense.amount }} {{ request.user.usersettings.preferred_currency }}</td>
+                    <td>{{ expense.category }}</td>
+                    <td>{{ expense.date|date:"Y-m-d" }}</td>
+                    <td class="actions">
+                        <a href="{% url 'delete' expense.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <div class="action-buttons">
+            <a href="{% url 'add_expense' %}" class="add-expense">Add New Expense</a>
+            <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+        </div>
+        
+        <footer>
+            &copy; 2023 Expense Tracker | 
+            <a href="https://github.com/yourusername" target="_blank">GitHub Profile</a>
+        </footer>
+    </div>
+</body>
+</html>
